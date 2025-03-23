@@ -95,6 +95,57 @@ function AdminPage() {
             </select>
           </div>
 
+          {/* Form Edit Barang */}
+          {editBarang && (
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Edit Barang</h3>
+              <form onSubmit={handleEditBarang} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Nama Barang</label>
+                  <input
+                    type="text"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    value={editBarang.nama_barang}
+                    onChange={(e) => setEditBarang({ ...editBarang, nama_barang: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Stok</label>
+                  <input
+                    type="number"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    value={editBarang.stok}
+                    onChange={(e) => setEditBarang({ ...editBarang, stok: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Link Gambar</label>
+                  <input
+                    type="text"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    value={editBarang.gambar || ''}
+                    onChange={(e) => setEditBarang({ ...editBarang, gambar: e.target.value })}
+                  />
+                </div>
+                <div className="flex space-x-3">
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  >
+                    Simpan
+                  </button>
+                  <button
+                    type="button"
+                    className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors"
+                    onClick={() => setEditBarang(null)}
+                  >
+                    Batal
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
+
           {/* Tabel Barang */}
           {selectedLab && (
             <div className="bg-white rounded-lg shadow-md p-6">
@@ -169,56 +220,7 @@ function AdminPage() {
             </div>
           )}
 
-          {/* Form Edit Barang */}
-          {editBarang && (
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Edit Barang</h3>
-              <form onSubmit={handleEditBarang} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Nama Barang</label>
-                  <input
-                    type="text"
-                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    value={editBarang.nama_barang}
-                    onChange={(e) => setEditBarang({ ...editBarang, nama_barang: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Stok</label>
-                  <input
-                    type="number"
-                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    value={editBarang.stok}
-                    onChange={(e) => setEditBarang({ ...editBarang, stok: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Link Gambar</label>
-                  <input
-                    type="text"
-                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    value={editBarang.gambar || ''}
-                    onChange={(e) => setEditBarang({ ...editBarang, gambar: e.target.value })}
-                  />
-                </div>
-                <div className="flex space-x-3">
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-                  >
-                    Simpan
-                  </button>
-                  <button
-                    type="button"
-                    className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors"
-                    onClick={() => setEditBarang(null)}
-                  >
-                    Batal
-                  </button>
-                </div>
-              </form>
-            </div>
-          )}
+          
         </div>
       </div>
     </div>
