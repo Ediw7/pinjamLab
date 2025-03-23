@@ -67,7 +67,77 @@ const Peminjaman = {
                 callback(null, results);
             }
         );
-    }
-};
+    },
 
-module.exports = Peminjaman;
+    getLabs: (callback) => {
+        db.query('SELECT id_lab, nama_lab FROM lab', (err, results) => {
+          if (err) return callback(err);
+          callback(null, results);
+        });
+      },
+    
+      getBarangByLab: (id_lab, callback) => {
+        db.query(
+          'SELECT b.id_barang, b.nama_barang, b.stok, l.nama_lab, COUNT(p.id_peminjaman) as dipinjam ' +
+          'FROM barang b ' +
+          'JOIN lab l ON b.id_lab = l.id_lab ' +
+          'LEFT JOIN peminjaman p ON b.id_barang = p.id_barang AND p.tanggal_kembali IS NULL AND p.is_deleted = 0 ' +
+          'WHERE b.id_lab = ? AND b.is_deleted = 0 ' +
+          'GROUP BY b.id_barang, b.nama_barang, b.stok, l.nama_lab',
+          [id_lab],
+          (err, results) => {
+            if (err) return callback(err);
+            callback(null, results);
+          }
+        );
+      },
+    
+      createLab: (labData, callback) => {
+        const { nama_lab, deskripsi } = labData;
+        db.query(
+          'INSERT INTO lab (nama_lab, deskripsi) VALUES (?, ?)',
+          [nama_lab, deskripsi],
+          (err, result) => {
+            if (err) return callback(err);
+            callback(null, { id: result.insertId });
+          }
+        );
+      },
+    
+      createBarang: (barangData, callback) => {
+        const { id_lab, nama_barang, stok } = barangData;
+        db.query(
+          'INSERT INTO barang (id_lab, nama_barang, stok) VALUES (?, ?, ?)',
+          [id_lab, nama_barang, stok],
+          (err, result) => {
+            if (err) return callback(err);
+            callback(null, { id: result.insertId });
+          }
+        );
+      },
+    
+      updateBarang: (id, barangData, callback) => {
+        const { nama_barang, stok } = barangData;
+        db.query(
+          'UPDATE barang SET nama_barang = ?, stok = ? WHERE id_barang = ? AND is_deleted = 0',
+          [nama_barang, stok, id],
+          (err, result) => {
+            if (err) return callback(err);
+            callback(null, result);
+          }
+        );
+      },
+    
+      deleteBarang: (id, callback) => {
+        db.query(
+          'UPDATE barang SET is_deleted = 1 WHERE id_barang = ?',
+          [id],
+          (err, result) => {
+            if (err) return callback(err);
+            callback(null, result);
+          }
+        );
+      },
+    };
+    
+    module.exports = Peminjaman;

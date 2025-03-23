@@ -1,8 +1,15 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 require('dotenv').config();
 
 app.use(express.json());
+
+app.use(cors({
+    origin: 'http://localhost:5173', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+    allowedHeaders: ['Content-Type', 'Authorization'], 
+  }));
 
 const routes = require('./routes/index');
 app.use('/api', routes);

@@ -14,5 +14,13 @@ router.get('/peminjaman', authenticateToken, checkRole('admin'), peminjamanContr
 router.put('/peminjaman/:id', authenticateToken, checkRole('admin'), peminjamanController.updatePeminjaman);
 router.delete('/peminjaman/:id', authenticateToken, checkRole('admin'), peminjamanController.deletePeminjaman);
 router.get('/barang/search', authenticateToken, peminjamanController.searchBarang);
+router.get('/labs', authenticateToken, peminjamanController.getLabs);
+router.get('/barang/lab/:id_lab', authenticateToken, peminjamanController.getBarangByLab);
+
+// Admin Routes (Baru)
+router.post('/lab', authenticateToken, checkRole('admin'), peminjamanController.createLab);
+router.post('/barang', authenticateToken, checkRole('admin'), peminjamanController.createBarang);
+router.put('/barang/:id', authenticateToken, checkRole('admin'), peminjamanController.updateBarang);
+router.delete('/barang/:id', authenticateToken, checkRole('admin'), peminjamanController.deleteBarang);
 
 module.exports = router;
