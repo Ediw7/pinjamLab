@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 23, 2025 at 03:33 PM
+-- Generation Time: Mar 23, 2025 at 06:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -32,6 +32,7 @@ CREATE TABLE `barang` (
   `id_lab` int(11) NOT NULL,
   `nama_barang` varchar(100) NOT NULL,
   `stok` int(11) NOT NULL,
+  `gambar` varchar(255) DEFAULT NULL,
   `is_deleted` tinyint(4) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -39,11 +40,15 @@ CREATE TABLE `barang` (
 -- Dumping data for table `barang`
 --
 
-INSERT INTO `barang` (`id_barang`, `id_lab`, `nama_barang`, `stok`, `is_deleted`) VALUES
-(1, 1, 'Laptop', 10, 0),
-(2, 2, 'Mikrokontroler', 15, 0),
-(3, 3, 'Kamera', 5, 0),
-(4, 4, 'Router', 8, 0);
+INSERT INTO `barang` (`id_barang`, `id_lab`, `nama_barang`, `stok`, `gambar`, `is_deleted`) VALUES
+(1, 1, 'Laptop', 15, NULL, 0),
+(2, 2, 'Mikrokontroler', 15, NULL, 0),
+(3, 3, 'Kamera', 5, NULL, 0),
+(4, 4, 'Router', 8, NULL, 0),
+(5, 1, 'Keyboard', 12, NULL, 0),
+(6, 2, 'IC 7404', 22, NULL, 0),
+(7, 3, 'IPhone', 1, NULL, 0),
+(8, 2, 'ic 7432', 22, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -83,6 +88,13 @@ CREATE TABLE `peminjaman` (
   `is_deleted` tinyint(4) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `peminjaman`
+--
+
+INSERT INTO `peminjaman` (`id_peminjaman`, `id_user`, `id_barang`, `jumlah`, `tanggal_pinjam`, `tanggal_kembali`, `is_deleted`) VALUES
+(1, 4, 1, 1, '2025-03-23', NULL, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -104,7 +116,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id_user`, `username`, `password`, `role`, `nama`) VALUES
 (1, 'admin1', 'password123', 'admin', 'Pengelola Lab'),
 (2, 'mhs1', 'password123', 'mahasiswa', 'Budi Mahasiswa'),
-(3, 'admin2', 'admin123', 'admin', 'Erwan');
+(3, 'admin2', 'admin123', 'admin', 'Erwan'),
+(4, 'edi', 'edi123', 'mahasiswa', 'ediwi');
 
 --
 -- Indexes for dumped tables
@@ -145,7 +158,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `lab`
@@ -157,13 +170,13 @@ ALTER TABLE `lab`
 -- AUTO_INCREMENT for table `peminjaman`
 --
 ALTER TABLE `peminjaman`
-  MODIFY `id_peminjaman` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_peminjaman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
