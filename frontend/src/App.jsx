@@ -3,6 +3,9 @@ import Register from './pages/Register.jsx';
 import Login from './pages/Login.jsx';
 import AdminPage from './pages/Admin/AdminPage.jsx';
 import MahasiswaPage from './pages/Mahasiswa/MahasiswaPage.jsx';
+import KelolaBarang from './pages/Admin/KelolaBarang.jsx';
+import KelolaLab from './pages/Admin/KelolaLab.jsx';
+import Peminjam from './pages/Admin/Peminjam.jsx';
 
 function App() {
   const token = localStorage.getItem('token');
@@ -20,6 +23,10 @@ function App() {
         element={token ? <MahasiswaPage /> : <Navigate to="/login" />}
       />
       <Route path="/" element={<Navigate to="/register" />} />
+
+      <Route path="/admin/barang" element={<KelolaBarang />} />
+        <Route path="/admin/lab" element={<KelolaLab />} />
+        <Route path="/admin/peminjam" element={<Peminjam />} />
     </Routes>
   );
 }
