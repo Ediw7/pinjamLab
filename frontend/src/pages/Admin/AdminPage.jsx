@@ -54,9 +54,17 @@ function AdminPage() {
   const handleEditBarang = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:3000/api/barang/${editBarang.id_barang}`, editBarang, {
-        headers: { Authorization: localStorage.getItem('token') },
-      });
+      await axios.put(
+        `http://localhost:3000/api/barang/${editBarang.id_barang}`,
+        {
+          nama_barang: editBarang.nama_barang,
+          stok: editBarang.stok,
+          gambar: editBarang.gambar,
+        },
+        {
+          headers: { Authorization: localStorage.getItem('token') },
+        }
+      );
       alert('Barang updated');
       setBarang(barang.map((b) => (b.id_barang === editBarang.id_barang ? editBarang : b)));
       setEditBarang(null);
@@ -101,6 +109,9 @@ function AdminPage() {
                         ID Barang
                       </th>
                       <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Gambar
+                      </th>
+                      <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Nama Barang
                       </th>
                       <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -119,6 +130,13 @@ function AdminPage() {
                       barang.map((item) => (
                         <tr key={item.id_barang}>
                           <td className="py-3 px-4 text-sm text-gray-900">{item.id_barang}</td>
+                          <td className="py-3 px-4 text-sm text-gray-900">
+                            <img
+                              src={item.gambar || 'https://via.placeholder.com/100'}
+                              alt={item.nama_barang}
+                              className="w-16 h-16 object-cover rounded-md"
+                            />
+                          </td>
                           <td className="py-3 px-4 text-sm text-gray-900">{item.nama_barang}</td>
                           <td className="py-3 px-4 text-sm text-gray-900">{item.stok}</td>
                           <td className="py-3 px-4 text-sm text-gray-900">{item.dipinjam}</td>
@@ -140,7 +158,7 @@ function AdminPage() {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="5" className="py-4 px-4 text-center text-sm text-gray-500">
+                        <td colSpan="6" className="py-4 px-4 text-center text-sm text-gray-500">
                           Tidak ada barang di lab ini
                         </td>
                       </tr>
@@ -172,6 +190,15 @@ function AdminPage() {
                     className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                     value={editBarang.stok}
                     onChange={(e) => setEditBarang({ ...editBarang, stok: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Link Gambar</label>
+                  <input
+                    type="text"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                    value={editBarang.gambar || ''}
+                    onChange={(e) => setEditBarang({ ...editBarang, gambar: e.target.value })}
                   />
                 </div>
                 <div className="flex space-x-3">
