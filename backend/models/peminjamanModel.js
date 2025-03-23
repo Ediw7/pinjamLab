@@ -17,7 +17,8 @@ const Peminjaman = {
   // Get all peminjaman
   findAll: (callback) => {
     db.query(
-      'SELECT p.id_peminjaman, u.nama, b.nama_barang, l.nama_lab, p.jumlah, p.tanggal_pinjam, p.tanggal_kembali ' +
+      'SELECT p.id_peminjaman, u.nama, b.nama_barang, l.nama_lab, p.jumlah, p.tanggal_pinjam, p.tanggal_kembali, b.stok, ' +
+      'CASE WHEN p.tanggal_kembali IS NULL THEN "Dipinjam" ELSE "Dikembalikan" END AS status ' +
       'FROM peminjaman p ' +
       'JOIN users u ON p.id_user = u.id_user ' +
       'JOIN barang b ON p.id_barang = b.id_barang ' +
