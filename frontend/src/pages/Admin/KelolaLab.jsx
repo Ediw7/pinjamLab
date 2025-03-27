@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 import Navbar from './Navbar.jsx';
 
 function KelolaLab() {
@@ -38,7 +38,7 @@ function KelolaLab() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
-      <div className="container mx-auto px-6 pt-20 pb-6">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10">
         <div className="bg-white rounded-lg shadow-md p-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Tambah Lab Baru</h3>
           <form onSubmit={handleAddLab} className="space-y-4">
@@ -69,6 +69,30 @@ function KelolaLab() {
               Tambah Lab
             </button>
           </form>
+        </div>
+
+        <div className="mt-10 bg-white rounded-lg shadow-md p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Daftar Lab</h3>
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID Lab</th>
+                  <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Lab</th>
+                  <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deskripsi</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {labs.map((lab) => (
+                  <tr key={lab.id_lab}>
+                    <td className="py-3 px-4 text-sm text-gray-900">{lab.id_lab}</td>
+                    <td className="py-3 px-4 text-sm text-gray-900">{lab.nama_lab}</td>
+                    <td className="py-3 px-4 text-sm text-gray-900">{lab.deskripsi}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
