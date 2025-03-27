@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,11 +8,33 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const verifyToken = async () => {
+      const token = localStorage.getItem('token');
+
+      if (!token) return;
+
+      try {
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/verify-token`, { token });
+
+        if (res.data.role) {
+          const role = res.data.role;
+          navigate(role === 'admin' ? '/admin' : '/mahasiswa');
+        }
+      } catch (err) {
+        console.error('Token verification failed:', err);
+        localStorage.removeItem('token');
+      }
+    };
+
+    verifyToken();
+  }, [navigate]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await axios.post(`http://localhost:3000/api/login`, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/login`, {
         username,
         password,
       });
