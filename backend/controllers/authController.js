@@ -38,4 +38,18 @@ const login = (req, res) => {
     });
 };
 
-module.exports = { register, login };
+const verifyToken = (req, res) => {
+    const { token } = req.body;
+
+    if (!token) {
+        return res.status(400).json({ message: 'Token is required' });
+    }
+    jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
+        if (err) {
+            return res.status(401).json({ message: 'Invalid or expired token', error: err });
+        }
+        res.status(200).json({ message: 'Token is valid', data });
+    });
+};
+
+module.exports = { register, login, verifyToken };

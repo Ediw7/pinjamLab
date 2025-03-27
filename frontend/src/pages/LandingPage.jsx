@@ -1,9 +1,32 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { ChevronDown, ArrowRight, Beaker, ShieldCheck, Clock } from 'lucide-react';
 
 function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      const token = localStorage.getItem('token');
+
+      if (!token) return;
+
+      try {
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/verify-token`, { token });
+
+        if (res.data.role) {
+          const role = res.data.role;
+          navigate(role === 'admin' ? '/admin' : '/mahasiswa');
+        }
+      } catch (err) {
+        console.error('Token verification failed:', err);
+        localStorage.removeItem('token');
+      }
+    };
+
+    verifyToken();
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-white text-gray-800">

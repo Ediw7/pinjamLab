@@ -19,7 +19,7 @@ function KelolaBarang() {
       setLoading(true);
       setError(null);
       try {
-        const res = await axios.get(`http://localhost:3000/api/labs`, {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/labs`, {
           headers: { Authorization: localStorage.getItem('token') },
         });
         setLabs(res.data);
@@ -38,7 +38,7 @@ function KelolaBarang() {
         setLoading(true);
         setError(null);
         try {
-          const res = await axios.get(`http://localhost:3000/api/barang/lab/${selectedLab}`, {
+          const res = await axios.get(`${import.meta.env.VITE_API_URL}/barang/lab/${selectedLab}`, {
             headers: { Authorization: localStorage.getItem('token') },
           });
           setBarang(res.data);
@@ -75,7 +75,7 @@ function KelolaBarang() {
     setError(null);
     try {
       const res = await axios.post(
-        `http://localhost:3000/api/barang`,
+        `${import.meta.env.VITE_API_URL}/barang`,
         {
           id_lab: newBarang.id_lab,
           nama_barang: newBarang.nama_barang,
@@ -122,7 +122,7 @@ function KelolaBarang() {
     setError(null);
     try {
       await axios.put(
-        `http://localhost:3000/api/barang/${editBarang.id_barang}`,
+        `${import.meta.env.VITE_API_URL}/barang/${editBarang.id_barang}`,
         {
           nama_barang: editBarang.nama_barang,
           stok: editBarang.stok,
@@ -151,7 +151,7 @@ function KelolaBarang() {
     setLoading(true);
     setError(null);
     try {
-      await axios.delete(`http://localhost:3000/api/barang/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/barang/${id}`, {
         headers: { Authorization: localStorage.getItem('token') },
       });
       showToast('Barang berhasil dihapus', 'success');

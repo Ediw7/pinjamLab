@@ -20,7 +20,7 @@ function Peminjam() {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get(`http://localhost:3000/api/peminjaman`, {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/peminjaman`, {
         headers: { Authorization: localStorage.getItem('token') },
       });
       setPeminjaman(res.data);
@@ -37,7 +37,7 @@ function Peminjam() {
     setLoading(true);
     try {
       await axios.put(
-        `http://localhost:3000/api/peminjaman/${id}`,
+        `${import.meta.env.VITE_API_URL}/peminjaman/${id}`,
         { tanggal_kembali: new Date().toISOString().slice(0, 10) },
         {
           headers: { Authorization: localStorage.getItem('token') },
