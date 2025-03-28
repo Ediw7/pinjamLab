@@ -238,7 +238,7 @@ function Peminjam() {
                       onClick={() => handleSort('lab')}
                     >
                       <div className="flex items-center">
-                        Nama Lab
+                        Nama Peminjam
                         {sortField === 'lab' && (
                           <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={sortOrder === 'asc' ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
@@ -246,14 +246,14 @@ function Peminjam() {
                         )}
                       </div>
                     </th>
-                    <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah</th>
-                    <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stok Total</th>
+                    <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Barang</th>
+                    <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lab</th>
                     <th 
                       className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                       onClick={() => handleSort('tanggal_pinjam')}
                     >
                       <div className="flex items-center">
-                        Tanggal Pinjam
+                        Jumlah
                         {sortField === 'tanggal_pinjam' && (
                           <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={sortOrder === 'asc' ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
@@ -261,6 +261,8 @@ function Peminjam() {
                         )}
                       </div>
                     </th>
+                    <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stok Asal</th>
+                    <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tangal Dipinjam</th>
                     <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                     <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                   </tr>
@@ -314,7 +316,7 @@ function Peminjam() {
             </div>
           )}
 
-          {/* Pagination (if needed) */}
+          {/* Pagination*/}
           {!loading && filteredPeminjaman.length > 0 && (
             <div className="px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
               <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
