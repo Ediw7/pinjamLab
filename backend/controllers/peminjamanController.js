@@ -19,6 +19,18 @@ const getAllPeminjaman = (req, res) => {
   });
 };
 
+// Read peminjaman mahasiswa (khusus mahasiswa yang login)
+const getPeminjamanMahasiswa = (req, res) => {
+  const id_user = req.user.id; // Ambil ID pengguna dari token
+  Peminjaman.findByUserId(id_user, (err, results) => {
+    if (err) return res.status(500).json({ message: 'Database error', error: err });
+    if (!results || results.length === 0) {
+      return res.status(200).json([]); // Kembalikan array kosong jika tidak ada data
+    }
+    res.json(results);
+  });
+};
+
 // Update Peminjaman (khusus admin)
 const updatePeminjaman = (req, res) => {
   const { id } = req.params;
@@ -80,7 +92,7 @@ const createLab = (req, res) => {
 
 // Create Barang
 const createBarang = (req, res) => {
-  const { id_lab, nama_barang, stok, gambar } = req.body; // Tambah gambar
+  const { id_lab, nama_barang, stok, gambar } = req.body;
   Peminjaman.createBarang({ id_lab, nama_barang, stok, gambar }, (err, result) => {
     if (err) return res.status(500).json({ message: 'Database error', error: err });
     res.status(201).json({ message: 'Barang created', id: result.id });
@@ -90,7 +102,7 @@ const createBarang = (req, res) => {
 // Update Barang
 const updateBarang = (req, res) => {
   const { id } = req.params;
-  const { nama_barang, stok, gambar } = req.body; // Tambah gambar
+  const { nama_barang, stok, gambar } = req.body;
   Peminjaman.updateBarang(id, { nama_barang, stok, gambar }, (err, result) => {
     if (err) return res.status(500).json({ message: 'Database error', error: err });
     if (result.affectedRows === 0) return res.status(404).json({ message: 'Barang not found' });
@@ -111,6 +123,7 @@ const deleteBarang = (req, res) => {
 module.exports = {
   createPeminjaman,
   getAllPeminjaman,
+  getPeminjamanMahasiswa, // Tambahkan ekspor fungsi baru
   updatePeminjaman,
   deletePeminjaman,
   searchBarang,

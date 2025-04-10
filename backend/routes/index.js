@@ -17,6 +17,7 @@ router.delete('/peminjaman/:id', authenticateToken, checkRole('admin'), peminjam
 router.get('/barang/search', authenticateToken, peminjamanController.searchBarang);
 router.get('/labs', authenticateToken, peminjamanController.getLabs);
 router.get('/barang/lab/:id_lab', authenticateToken, peminjamanController.getBarangByLab);
+router.get('/peminjaman/mahasiswa', authenticateToken, peminjamanController.getPeminjamanMahasiswa);
 
 // Admin Routes (Baru)
 router.post('/lab', authenticateToken, checkRole('admin'), peminjamanController.createLab);
