@@ -98,7 +98,7 @@ const Peminjaman = {
 
   getBarangByLab: (id_lab, callback) => {
     db.query(
-      'SELECT b.id_barang, b.nama_barang, b.stok, b.gambar, l.nama_lab, COUNT(p.id_peminjaman) as dipinjam ' +
+      'SELECT b.id_barang, b.nama_barang, b.stok, b.gambar, l.nama_lab, COALESCE(SUM(p.jumlah), 0) as dipinjam ' +
       'FROM barang b ' +
       'JOIN lab l ON b.id_lab = l.id_lab ' +
       'LEFT JOIN peminjaman p ON b.id_barang = p.id_barang AND p.tanggal_kembali IS NULL AND p.is_deleted = 0 ' +
