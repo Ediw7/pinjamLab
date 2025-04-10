@@ -26,7 +26,7 @@ function MahasiswaPage() {
     const fetchLabs = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get(`http://localhost:3000/api/labs`, {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/labs`, {
           headers: { Authorization: localStorage.getItem('token') },
         });
         setLabs(res.data);
@@ -53,7 +53,7 @@ function MahasiswaPage() {
   const fetchBarang = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get(`http://localhost:3000/api/barang/lab/${selectedLab}`, {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/barang/lab/${selectedLab}`, {
         headers: { Authorization: localStorage.getItem('token') },
       });
       setBarang(res.data);
@@ -67,7 +67,7 @@ function MahasiswaPage() {
   const fetchPeminjaman = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get(`http://localhost:3000/api/peminjaman/mahasiswa`, {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/peminjaman/mahasiswa`, {
         headers: { Authorization: localStorage.getItem('token') },
       });
       setPeminjaman(res.data);
@@ -98,7 +98,7 @@ function MahasiswaPage() {
     setIsLoading(true);
     try {
       const res = await axios.post(
-        `http://localhost:3000/api/peminjaman`,
+        `${import.meta.env.VITE_API_URL}/peminjaman`,
         {
           id_barang: selectedBarang.id_barang,
           jumlah,

@@ -10,7 +10,7 @@ function KelolaLab() {
   useEffect(() => {
     const fetchLabs = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/api/labs`, {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/labs`, {
           headers: { Authorization: localStorage.getItem('token') },
         });
         console.log('Data labs dari API:', res.data);
@@ -27,7 +27,7 @@ function KelolaLab() {
     console.log('Data lab yang akan ditambahkan:', newLab);  // Memastikan data dikirim dengan benar
 
     try {
-      const res = await axios.post(`http://localhost:3000/api/lab`, newLab, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/lab`, newLab, {
         headers: { Authorization: localStorage.getItem('token') },
       });
       alert(`Lab added! ID: ${res.data.id}`);

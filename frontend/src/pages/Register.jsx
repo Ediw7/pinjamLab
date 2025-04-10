@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,14 +10,35 @@ function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const verifyToken = async () => {
+      const token = localStorage.getItem('token');
+
+      if (!token) return;
+
+      try {
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/verify-token`, { token });
+
+        if (res.data.role) {
+          const role = res.data.role;
+          navigate(role === 'admin' ? '/admin' : '/mahasiswa');
+        }
+      } catch (err) {
+        console.error('Token verification failed:', err);
+        localStorage.removeItem('token');
+      }
+    };
+
+    verifyToken();
+  }, [navigate]);
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await axios.post(`http://localhost:3000/api/register`, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/register`, {
         username,
         password,
-        role,
         nama,
       });
       alert(`Register successful! ID: ${res.data.id}`);
@@ -91,8 +112,8 @@ function Register() {
                 onChange={(e) => setNama(e.target.value)}
               />
             </div>
-            
-            <div>
+
+            {/* <div>
               <label htmlFor="role" className="block text-sm font-medium text-gray-700">
                 Role
               </label>
@@ -105,7 +126,7 @@ function Register() {
                 <option value="mahasiswa">Mahasiswa</option>
                 <option value="admin">Admin</option>
               </select>
-            </div>
+            </div> */}
           </div>
 
           <div>
