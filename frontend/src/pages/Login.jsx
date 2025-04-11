@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -114,9 +114,9 @@ function Login() {
         <div className="text-center mt-4">
           <p className="text-sm text-gray-600">
             Belum punya akun?{' '}
-            <a href="/register" className="font-medium text-blue-600 hover:text-blue-500">
+            <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
               Register disini
-            </a>
+            </Link> 
           </p>
         </div>
       </div>

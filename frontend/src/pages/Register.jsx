@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -37,7 +37,7 @@ function Register() {
         role: 'user', // Role otomatis diatur sebagai "user"
         nama,
       });
-      alert(`Register successful! ID: ${res.data.id}`);
+      alert(`Register successful!`);
       navigate('/login');
     } catch (err) {
       alert('Register failed: ' + (err.response?.data?.message || 'Server error'));
@@ -124,9 +124,9 @@ function Register() {
         <div className="text-center mt-4">
           <p className="text-sm text-gray-600">
             Sudah punya akun?{' '}
-            <a href="/login" className="font-medium text-blue-600 hover:text-blue-500">
-              Login di sini
-            </a>
+            <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500">
+              Login disini
+            </Link>
           </p>
         </div>
       </div>

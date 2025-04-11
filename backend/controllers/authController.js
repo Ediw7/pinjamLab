@@ -2,7 +2,8 @@ const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 
 const register = (req, res) => {
-  const { username, password, role, nama } = req.body;
+    const { username, password, nama } = req.body;
+    const role = "mahasiswa";
 
   if (!username || !password || !role || !nama) {
     return res.status(400).json({ message: 'Semua field harus diisi' });

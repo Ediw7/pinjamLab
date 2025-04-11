@@ -282,7 +282,7 @@ function KelolaBarang() {
                         src={newBarang.gambar}
                         alt="Preview"
                         className="w-24 h-24 object-cover rounded-md border border-gray-300"
-                        onError={(e) => e.target.src = 'https://via.placeholder.com/100'}
+                        onError={(e) => e.target.src = 'https://placehold.co/100'}
                       />
                     </div>
                   )}
@@ -354,10 +354,10 @@ function KelolaBarang() {
                       <div className="mt-2">
                         <p className="text-sm text-gray-500 mb-1">Preview:</p>
                         <img
-                          src={editBarang.gambar || 'https://via.placeholder.com/100'}
+                          src={editBarang.gambar || 'https://placehold.co/100'}
                           alt="Preview"
                           className="w-24 h-24 object-cover rounded-md border border-gray-300"
-                          onError={(e) => e.target.src = 'https://via.placeholder.com/100'}
+                          onError={(e) => e.target.src = 'https://placehold.co/100'}
                         />
                       </div>
                     )}
@@ -482,9 +482,9 @@ function KelolaBarang() {
                                 <div className="flex-shrink-0 h-16 w-16">
                                   <img
                                     className="h-16 w-16 rounded-md object-cover border border-gray-200"
-                                    src={item.gambar || 'https://via.placeholder.com/100'}
+                                    src={item.gambar || 'https://placehold.co/100'}
                                     alt={item.nama_barang}
-                                    onError={(e) => e.target.src = 'https://via.placeholder.com/100'}
+                                    onError={(e) => e.target.src = 'https://placehold.co/100'}
                                   />
                                 </div>
                               </td>
