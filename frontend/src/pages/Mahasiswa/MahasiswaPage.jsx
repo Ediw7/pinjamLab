@@ -211,7 +211,7 @@ function MahasiswaPage() {
                           <tr key={item.id_barang}>
                             <td className="py-3 px-4 text-sm text-gray-900">
                               <img
-                                src={item.gambar || 'https://via.placeholder.com/100'}
+                                src={item.gambar || 'https://placehold.co/100'}
                                 alt={item.nama_barang}
                                 className="w-16 h-16 object-cover rounded-md"
                               />

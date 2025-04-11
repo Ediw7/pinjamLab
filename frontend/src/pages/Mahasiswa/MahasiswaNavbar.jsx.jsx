@@ -27,7 +27,7 @@ const MahasiswaNavbar = ({ activeTab, setActiveTab }) => {
                 alt="Lab Logo"
                 onError={(e) => {
                   e.target.onerror = null;
-                  e.target.src = "https://via.placeholder.com/40?text=Lab";
+                  e.target.src = "https://placehold.co/40?text=Lab";
                 }}
               />
               <span className="ml-2 text-xl font-bold text-gray-800">Teknik Komputer Lab</span>

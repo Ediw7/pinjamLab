@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 
 // Register
 const register = (req, res) => {
-    const { username, password, role, nama } = req.body;
+    const { username, password, nama } = req.body;
+    const role = "mahasiswa";
 
     if (!['admin', 'mahasiswa'].includes(role)) {
         return res.status(400).json({ message: 'Invalid role' });
