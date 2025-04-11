@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Tambahkan impor axios
 import { ChevronDown, ArrowRight, Beaker, ShieldCheck, Clock } from 'lucide-react';
 
 function LandingPage() {
@@ -9,12 +10,10 @@ function LandingPage() {
   useEffect(() => {
     const verifyToken = async () => {
       const token = localStorage.getItem('token');
-
       if (!token) return;
 
       try {
         const res = await axios.post(`${import.meta.env.VITE_API_URL}/verify-token`, { token });
-
         if (res.data.role) {
           const role = res.data.role;
           navigate(role === 'admin' ? '/admin' : '/mahasiswa');
@@ -40,8 +39,6 @@ function LandingPage() {
             </div>
             
             {/* Desktop Menu */}
-            
-            
             <div className="hidden md:flex items-center space-x-4">
               <Link to="/login" className="px-3 py-2 text-gray-600 hover:text-blue-600 transition-colors">Login</Link>
               <Link to="/register" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">Register</Link>
@@ -65,7 +62,6 @@ function LandingPage() {
           {/* Mobile Menu */}
           {isMenuOpen && (
             <div className="md:hidden py-4 border-t border-gray-100">
-             
               <div className="mt-4 space-y-2">
                 <Link to="/login" className="block py-2 text-gray-600 hover:text-blue-600">Login</Link>
                 <Link to="/register" className="block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-center">Register</Link>
@@ -110,6 +106,10 @@ function LandingPage() {
                     src="https://lh3.googleusercontent.com/gps-cs-s/AB5caB9mtUslfPBurZUAcPOxZlfRu1CCsURELDag8DQLvEkbizfNbXM45vFEF1hNt5h3lKc5Mto5Cu6X03Zn8Hgo9s48AijswbglGaLddJEN1zyPcfWF02Iklr4M3mWqOU4RcvFaCs8n=s680-w680-h510" 
                     alt="Laboratory Equipment" 
                     className="w-full h-auto rounded"
+                    onError={(e) => {
+                      console.log('Gambar utama gagal dimuat');
+                      e.target.src = '/images/fallback-lab.png'; // Fallback lokal
+                    }}
                   />
                 </div>
               </div>
@@ -214,7 +214,7 @@ function LandingPage() {
             </div>
           </div>
           <div className="border-t border-gray-200 pt-6 mt-6 text-sm text-gray-500 text-center">
-            &copy; 2025 PinjamLab. All rights reserved.
+            © 2025 PinjamLab. All rights reserved.
           </div>
         </div>
       </footer>

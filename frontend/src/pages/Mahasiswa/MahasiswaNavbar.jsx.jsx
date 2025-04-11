@@ -23,11 +23,12 @@ const MahasiswaNavbar = ({ activeTab, setActiveTab }) => {
             <div className="flex-shrink-0 flex items-center">
               <img 
                 className="h-8 w-auto" 
-                src="/assets/logo-lab.png" 
+                src="/logo.png" // Path ke logo di public
                 alt="Lab Logo"
                 onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "https://placehold.co/40?text=Lab";
+                  console.log('Gambar logo utama gagal dimuat');
+                  e.target.onerror = null; 
+                  e.target.src = "/fallback-logo.png"; // Fallback lokal
                 }}
               />
               <span className="ml-2 text-xl font-bold text-gray-800">Teknik Komputer Lab</span>

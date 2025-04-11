@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('mahasiswa');
   const [nama, setNama] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -13,12 +12,9 @@ function Register() {
   useEffect(() => {
     const verifyToken = async () => {
       const token = localStorage.getItem('token');
-
       if (!token) return;
-
       try {
         const res = await axios.post(`${import.meta.env.VITE_API_URL}/verify-token`, { token });
-
         if (res.data.role) {
           const role = res.data.role;
           navigate(role === 'admin' ? '/admin' : '/mahasiswa');
@@ -28,7 +24,6 @@ function Register() {
         localStorage.removeItem('token');
       }
     };
-
     verifyToken();
   }, [navigate]);
 
@@ -39,6 +34,7 @@ function Register() {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/register`, {
         username,
         password,
+        role: 'user', // Role otomatis diatur sebagai "user"
         nama,
       });
       alert(`Register successful!`);
@@ -112,21 +108,6 @@ function Register() {
                 onChange={(e) => setNama(e.target.value)}
               />
             </div>
-
-            {/* <div>
-              <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-                Role
-              </label>
-              <select
-                id="role"
-                className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-              >
-                <option value="mahasiswa">Mahasiswa</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div> */}
           </div>
 
           <div>

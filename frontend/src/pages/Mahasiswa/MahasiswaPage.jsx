@@ -21,24 +21,8 @@ function MahasiswaPage() {
     setTanggalPinjam(formattedDate);
   }, []);
 
-  // Fetch labs data
+  // Fetch labs and peminjaman data on mount
   useEffect(() => {
-    const fetchLabs = async () => {
-      setIsLoading(true);
-      try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/labs`, {
-          headers: { Authorization: localStorage.getItem('token') },
-        });
-        setLabs(res.data);
-        if (res.data.length > 0) {
-          setSelectedLab(res.data[0].id_lab);
-        }
-      } catch (err) {
-        showNotification('Error mengambil data lab', 'error');
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchLabs();
     fetchPeminjaman();
   }, []);
@@ -50,6 +34,24 @@ function MahasiswaPage() {
     }
   }, [selectedLab]);
 
+  const fetchLabs = async () => {
+    setIsLoading(true);
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/labs`, {
+        headers: { Authorization: localStorage.getItem('token') },
+      });
+      setLabs(res.data);
+      if (res.data.length > 0) {
+        setSelectedLab(res.data[0].id_lab);
+      }
+    } catch (err) {
+      showNotification('Error mengambil data lab: ' + (err.response?.data?.message || 'Server error'), 'error');
+      console.error('Error fetchLabs:', err.response?.data || err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const fetchBarang = async () => {
     setIsLoading(true);
     try {
@@ -58,7 +60,8 @@ function MahasiswaPage() {
       });
       setBarang(res.data);
     } catch (err) {
-      showNotification('Error mengambil data barang', 'error');
+      showNotification('Error mengambil data barang: ' + (err.response?.data?.message || 'Server error'), 'error');
+      console.error('Error fetchBarang:', err.response?.data || err);
     } finally {
       setIsLoading(false);
     }
@@ -66,13 +69,16 @@ function MahasiswaPage() {
 
   const fetchPeminjaman = async () => {
     setIsLoading(true);
+    const token = localStorage.getItem('token');
+    console.log('Fetching peminjaman with token:', token); // Debugging token
     try {
       const res = await axios.get(`${import.meta.env.VITE_API_URL}/peminjaman/mahasiswa`, {
-        headers: { Authorization: localStorage.getItem('token') },
+        headers: { Authorization: token },
       });
       setPeminjaman(res.data);
     } catch (err) {
-      showNotification('Error mengambil riwayat peminjaman', 'error');
+      showNotification('Error mengambil riwayat peminjaman: ' + (err.response?.data?.message || 'Server error'), 'error');
+      console.error('Error fetchPeminjaman:', err.response?.data || err);
     } finally {
       setIsLoading(false);
     }
@@ -112,10 +118,10 @@ function MahasiswaPage() {
       setJumlah(1);
 
       // Refresh data
-      fetchBarang();
-      fetchPeminjaman();
+      await Promise.all([fetchBarang(), fetchPeminjaman()]);
     } catch (err) {
       showNotification(`Peminjaman gagal: ${err.response?.data?.message || 'Server error'}`, 'error');
+      console.error('Error handlePinjam:', err.response?.data || err);
     } finally {
       setIsLoading(false);
     }
@@ -129,7 +135,7 @@ function MahasiswaPage() {
   };
 
   const getStatusClass = (status) => {
-    switch (status.toLowerCase()) {
+    switch (status?.toLowerCase()) {
       case 'dipinjam':
         return 'bg-yellow-100 text-yellow-800';
       case 'dikembalikan':
@@ -211,21 +217,25 @@ function MahasiswaPage() {
                           <tr key={item.id_barang}>
                             <td className="py-3 px-4 text-sm text-gray-900">
                               <img
-                                src={item.gambar || 'https://placehold.co/100'}
+                                src={item.gambar || '/images/default-item.png'}
                                 alt={item.nama_barang}
                                 className="w-16 h-16 object-cover rounded-md"
+                                onError={(e) => {
+                                  console.log(`Gambar ${item.nama_barang} gagal dimuat`);
+                                  e.target.src = '/images/default-item.png';
+                                }}
                               />
                             </td>
                             <td className="py-3 px-4 text-sm text-gray-900">{item.nama_barang}</td>
                             <td className="py-3 px-4 text-sm text-gray-900">{item.stok}</td>
-                            <td className="py-3 px-4 text-sm text-gray-900">{item.stok - item.dipinjam}</td>
+                            <td className="py-3 px-4 text-sm text-gray-900">{item.stok - (item.dipinjam || 0)}</td>
                             <td className="py-3 px-4 text-sm">
                               <button
                                 onClick={() => setSelectedBarang(item)}
-                                disabled={item.stok - item.dipinjam <= 0}
+                                disabled={(item.stok - (item.dipinjam || 0)) <= 0}
                                 className={`px-3 py-1 text-xs font-medium rounded-md
                                   ${
-                                    item.stok - item.dipinjam <= 0
+                                    (item.stok - (item.dipinjam || 0)) <= 0
                                       ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
                                       : 'bg-blue-600 text-white hover:bg-blue-700'
                                   }`}
@@ -273,7 +283,7 @@ function MahasiswaPage() {
                 <form onSubmit={handlePinjam} className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Jumlah (Tersedia: {selectedBarang.stok - selectedBarang.dipinjam})
+                      Jumlah (Tersedia: {selectedBarang.stok - (selectedBarang.dipinjam || 0)})
                     </label>
                     <input
                       type="number"
@@ -281,7 +291,7 @@ function MahasiswaPage() {
                       value={jumlah}
                       onChange={(e) => setJumlah(Number(e.target.value))}
                       min="1"
-                      max={selectedBarang.stok - selectedBarang.dipinjam}
+                      max={selectedBarang.stok - (selectedBarang.dipinjam || 0)}
                       required
                     />
                   </div>
@@ -322,7 +332,7 @@ function MahasiswaPage() {
         {activeTab === 'riwayat' && (
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Riwayat Peminjaman</h2>
-            
+
             {isLoading ? (
               <div className="flex justify-center my-8">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>

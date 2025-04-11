@@ -13,6 +13,7 @@ function KelolaLab() {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/labs`, {
           headers: { Authorization: localStorage.getItem('token') },
         });
+        console.log('Data labs dari API:', res.data);
         setLabs(res.data);
       } catch (err) {
         alert('Error fetching labs: ' + (err.response?.data?.message || 'Server error'));
@@ -23,13 +24,25 @@ function KelolaLab() {
 
   const handleAddLab = async (e) => {
     e.preventDefault();
+    console.log('Data lab yang akan ditambahkan:', newLab);  // Memastikan data dikirim dengan benar
+
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/lab`, newLab, {
         headers: { Authorization: localStorage.getItem('token') },
       });
       alert(`Lab added! ID: ${res.data.id}`);
+
+      // Perbaikan: menggunakan callback untuk memastikan state labs terbaru
+      setLabs((prevLabs) => [
+        ...prevLabs,
+        {
+          id_lab: res.data.id,
+          nama_lab: newLab.nama_lab,
+          deskripsi: newLab.deskripsi,
+        }
+      ]);
+
       setNewLab({ nama_lab: '', deskripsi: '' });
-      setLabs([...labs, { id_lab: res.data.id, nama_lab: newLab.nama_lab }]);
     } catch (err) {
       alert('Add lab failed: ' + (err.response?.data?.message || 'Server error'));
     }
@@ -50,16 +63,17 @@ function KelolaLab() {
                 placeholder="Masukkan nama lab"
                 value={newLab.nama_lab}
                 onChange={(e) => setNewLab({ ...newLab, nama_lab: e.target.value })}
+                required
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
-              <input
-                type="text"
+              <textarea
                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Masukkan deskripsi"
                 value={newLab.deskripsi}
                 onChange={(e) => setNewLab({ ...newLab, deskripsi: e.target.value })}
+                rows="3"
               />
             </div>
             <button
@@ -87,9 +101,16 @@ function KelolaLab() {
                   <tr key={lab.id_lab}>
                     <td className="py-3 px-4 text-sm text-gray-900">{lab.id_lab}</td>
                     <td className="py-3 px-4 text-sm text-gray-900">{lab.nama_lab}</td>
-                    <td className="py-3 px-4 text-sm text-gray-900">{lab.deskripsi}</td>
+                    <td className="py-3 px-4 text-sm text-gray-900">{lab.deskripsi || '-'}</td>
                   </tr>
                 ))}
+                {labs.length === 0 && (
+                  <tr>
+                    <td colSpan="3" className="py-4 text-center text-sm text-gray-500">
+                      Belum ada data lab
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
