@@ -222,7 +222,7 @@ function MahasiswaPage() {
                                 className="w-16 h-16 object-cover rounded-md"
                                 onError={(e) => {
                                   console.log(`Gambar ${item.nama_barang} gagal dimuat`);
-                                  e.target.src = '/images/default-item.png';
+                                  e.target.src = "https://placehold.co/64"; // Fallback image
                                 }}
                               />
                             </td>

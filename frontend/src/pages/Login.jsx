@@ -1,55 +1,62 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isCheckingToken, setIsCheckingToken] = useState(false); // Prevent looping
   const navigate = useNavigate();
 
   useEffect(() => {
     const verifyToken = async () => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
 
-      if (!token) return;
-
+      if (!token) {
+        return;
+      }
+      setIsCheckingToken(true);
       try {
-        const res = await axios.post(`${import.meta.env.VITE_API_URL}/verify-token`, { token });
+        const res = await axios.post(
+          `${import.meta.env.VITE_API_URL}/verify-token`,
+          { token }
+        );
 
         if (res.data.role) {
           const role = res.data.role;
-          navigate(role === 'admin' ? '/admin' : '/mahasiswa');
+          navigate(role === "admin" ? "/admin" : "/mahasiswa", { replace: true });
         }
       } catch (err) {
-        console.error('Token verification failed:', err);
-        localStorage.removeItem('token');
+        console.error("Token verification failed:", err);
+        localStorage.removeItem("token");
+      } finally {
+        setIsCheckingToken(false); // Mark check as complete
       }
     };
 
     verifyToken();
-  }, [navigate]);
+  }, []); // Removed navigate from dependencies
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate loading
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/login`, {
         username,
         password,
       });
-      localStorage.setItem('token', res.data.token);
-      if (res.data.role === 'admin') {
-        navigate('/admin');
-      } else {
-        navigate('/mahasiswa');
-      }
+      localStorage.setItem("token", res.data.token);
+      navigate(res.data.role === "admin" ? "/admin" : "/mahasiswa", { replace: true });
     } catch (err) {
-      alert('Login failed: ' + (err.response?.data?.message || 'Server error'));
+      alert("Login failed: " + (err.response?.data?.message || "Server error"));
     } finally {
       setIsLoading(false);
     }
   };
+
+  if (isCheckingToken) return <p>Checking authentication...</p>;
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
