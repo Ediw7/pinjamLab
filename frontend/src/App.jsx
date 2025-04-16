@@ -8,6 +8,9 @@ import KelolaBarang from './pages/Admin/KelolaBarang.jsx';
 import KelolaLab from './pages/Admin/KelolaLab.jsx';
 import Peminjam from './pages/Admin/Peminjam.jsx';
 import PrivateRoutes from './PrivateRoutes.jsx';
+import Profile from "./pages/Mahasiswa/Profile.jsx";
+
+
 
 function App() {
   return (
@@ -24,6 +27,7 @@ function App() {
           <Route path="/admin/barang" element={<KelolaBarang />} />
           <Route path="/admin/lab" element={<KelolaLab />} />
           <Route path="/admin/peminjam" element={<Peminjam />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
 
         {/* Redirect to Landing Page */}
